@@ -43,7 +43,7 @@ public class PracticeTest {
                     if (!question.isEmpty()) {
                         questions.add(new Question(question, new ArrayList<>(options), new ArrayList<>(correctAnswers)));
                     }
-                    question = text.substring(3).trim();  // Asume que empieza con algo como "Q1: "
+                    question = text.trim();  // Asume que empieza con algo como "Q1: "
                     options.clear();
                     correctAnswers.clear();
                 } else if (isOption(para)) {
@@ -96,7 +96,7 @@ public class PracticeTest {
         int score = 0;
         System.out.println(questions);
         for (Question question : questions) {
-            System.out.println("Pregunta: " + question.question);
+            System.out.println(question.question);
             int contador = 0;
             for (String option : question.options) {
                 System.out.println(option);
