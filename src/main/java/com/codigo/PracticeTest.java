@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 class Question {
@@ -92,13 +93,27 @@ public class PracticeTest {
     }
 
     public static void takeTest(List<Question> questions) {
+
         Scanner scanner = new Scanner(System.in);
         int score = 0;
-        System.out.println(questions);
-        for (Question question : questions) {
-            System.out.println(question.question);
+        int cantidad_preguntas = 5;
+        int count_q = cantidad_preguntas;
+        int new_random = 0;
+        Random aleatorio = new Random(System.currentTimeMillis());
+        List <Integer> num_q = new ArrayList<Integer>();;
+        for (int i = 1 ; i <= count_q; i++){
+            new_random = aleatorio.nextInt(questions.size());
+            if (!num_q.contains(new_random)) {
+                num_q.add(new_random);
+            } else {
+                i--;
+            }
+        }
+
+        while (count_q != 0) {
+            System.out.println(questions.get(num_q.get(count_q-1)).question);
             int contador = 0;
-            for (String option : question.options) {
+            for (String option : questions.get(num_q.get(count_q-1)).options) {
                 System.out.println(option);
             }
             System.out.print("Elige una o más opciones (separadas por comas): ");
@@ -106,21 +121,22 @@ public class PracticeTest {
 
             boolean isCorrect = true;
             for (String answer : userAnswers) {
-                if (!question.correctAnswers.contains(answer.trim())) {
+                if (!questions.get(num_q.get(count_q-1)).correctAnswers.contains(answer.trim())) {
                     isCorrect = false;
                     break;
                 }
             }
 
-            if (isCorrect && userAnswers.length == question.correctAnswers.size()) {
+            if (isCorrect && userAnswers.length == questions.get(num_q.get(count_q-1)).correctAnswers.size()) {
                 System.out.println("Correcto!");
                 score++;
             } else {
-                System.out.println("Incorrecto. Las respuestas correctas eran: " + String.join(", ", question.correctAnswers));
+                System.out.println("Incorrecto. Las respuestas correctas eran: " + String.join(", ", questions.get(num_q.get(count_q-1)).correctAnswers));
             }
             System.out.println();
+            count_q--;
         }
 
-        System.out.println("Tu puntaje final es: " + score + " de " + questions.size());
+        System.out.println("Tu puntaje final es: " + score + " de " + cantidad_preguntas);
     }
 }
