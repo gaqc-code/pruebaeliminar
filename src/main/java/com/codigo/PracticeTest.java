@@ -92,11 +92,31 @@ public class PracticeTest {
         return fullText.toString();
     }
 
+    public static void printQuestion (String question) {
+        String[] words = question.split(" ");
+        StringBuilder line = new StringBuilder();
+
+        for (String word : words) {
+            if (line.length() + word.length() > 120) {
+                System.out.print(line.toString() + '\n');
+                line = new StringBuilder();
+            }
+            if (line.length() > 0){
+                line.append(" ");
+            }
+            line.append(word);
+        }
+
+        if (line.length() > 0) {
+            System.out.println(line.toString());
+        }
+    }
+
     public static void takeTest(List<Question> questions) {
 
         Scanner scanner = new Scanner(System.in);
         int score = 0;
-        int cantidad_preguntas = 5;
+        int cantidad_preguntas = 20;
         int count_q = cantidad_preguntas;
         int new_random = 0;
         Random aleatorio = new Random(System.currentTimeMillis());
@@ -111,9 +131,10 @@ public class PracticeTest {
         }
 
         while (count_q != 0) {
-            System.out.println(questions.get(num_q.get(count_q-1)).question);
+            Question current_question = questions.get(num_q.get(count_q-1));
+            printQuestion(current_question.question);
             int contador = 0;
-            for (String option : questions.get(num_q.get(count_q-1)).options) {
+            for (String option : current_question.options) {
                 System.out.println(option);
             }
             System.out.print("Elige una o más opciones (separadas por comas): ");
@@ -121,17 +142,17 @@ public class PracticeTest {
 
             boolean isCorrect = true;
             for (String answer : userAnswers) {
-                if (!questions.get(num_q.get(count_q-1)).correctAnswers.contains(answer.trim())) {
+                if (!current_question.correctAnswers.contains(answer.trim().toLowerCase())) {
                     isCorrect = false;
                     break;
                 }
             }
 
-            if (isCorrect && userAnswers.length == questions.get(num_q.get(count_q-1)).correctAnswers.size()) {
+            if (isCorrect && userAnswers.length == current_question.correctAnswers.size()) {
                 System.out.println("Correcto!");
                 score++;
             } else {
-                System.out.println("Incorrecto. Las respuestas correctas eran: " + String.join(", ", questions.get(num_q.get(count_q-1)).correctAnswers));
+                System.out.println("Incorrecto. Las respuestas correctas eran: " + String.join(", ", current_question.correctAnswers));
             }
             System.out.println();
             count_q--;
